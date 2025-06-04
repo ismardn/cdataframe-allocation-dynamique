@@ -1,6 +1,6 @@
 # CDataframe – Tableau dynamique en C
 
-Projet en langage C visant à créer une structure de type tableau (dataframe) avec colonnes typées, manipulation de données et export en CSV.
+Projet en langage C visant à créer une structure de type tableau (dataframe) avec colonnes typées, manipulation de données et export en CSV. Ce projet est inspiré de la bibliothèque `pandas` de Python, dans le but de reproduire certaines de ses fonctionnalités fondamentales en langage bas niveau.
 
 ## Fonctionnalités
 - Création d’un tableau dynamique avec plusieurs colonnes
