@@ -16,7 +16,7 @@ int main() {
     char choix_caractere;
     scanf("%c", &choix_caractere);
     printf("\n");
-
+    
     if (choix_caractere == 'n') {
         return 0;
     } else {
@@ -313,9 +313,9 @@ int main() {
                     break;
 
                 case 4:
-                    printf("Entrez le caractere que vous souhaitez utiliser pour separer les valeurs parmi : \";\" ou \",\" :\n>");
+                    printf("Entrez le caractere que vous souhaitez utiliser pour separer les valeurs parmi : \",\" ou \";\" :\n>");
                     scanf(" %c", &choix_caractere);
-                    if (choix_caractere == ';' || choix_caractere == ',') {
+                    if (choix_caractere == ',' || choix_caractere == ';') {
                         exporter_cdataframe(cdataframe, NOM_FICHIER_CSV, choix_caractere);
                     } else {
                         entree_invalide();
