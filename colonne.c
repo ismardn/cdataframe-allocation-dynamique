@@ -124,13 +124,12 @@ void supprimer_colonne(Colonne **colonne) {
 }
 
 char *convertir_valeur(Colonne *colonne, unsigned long long int position){
+    char *chaine = malloc(LONGUEUR_MAX * sizeof(char));
+    
     // Vérifie si la valeur est NULL
     if (!colonne->donnees[position]) {
-        return "NULL"; // Retourne "NULL" sous forme de chaîne de caractères
+        snprintf(chaine, LONGUEUR_MAX, "%s", "NULL");
     } else {
-        // Alloue de la mémoire pour stocker la valeur convertie
-        char *chaine = malloc(LONGUEUR_MAX * sizeof(char));
-
         // Convertit la valeur en fonction du type de colonne
         switch (colonne->type_colonne) {
             case INT:
@@ -152,8 +151,9 @@ char *convertir_valeur(Colonne *colonne, unsigned long long int position){
                 snprintf(chaine, LONGUEUR_MAX, "%s", *((char**)colonne->donnees[position]));
                 break;
         }
-        return chaine; // Retourne la chaîne de caractères convertie
     }
+    
+    return chaine; // Retourne la chaîne de caractères convertie
 }
 
 void afficher_colonne(Colonne *colonne, int limite_ligne) {

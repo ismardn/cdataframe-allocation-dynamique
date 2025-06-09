@@ -10,6 +10,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+#define CONSOLE_DEVICE "CON"
+#else
+#define CONSOLE_DEVICE "/dev/tty"
+#endif
 
 
 Cdataframe *creer_cdataframe() {
@@ -101,7 +106,7 @@ void remplir_cdataframe_utilisateur(Cdataframe *cdataframe) {
             "4: Entier non signe\n"
             "5: Double\n"
             "6: Chaine de caracteres\n>", i);
-            scanf("%d", &choix_type);
+            scanf(" %d", &choix_type);
             printf("\n");
 
             // Switch pour chaque type choisi par l'utilisateur
@@ -521,20 +526,14 @@ void afficher_cdataframe_brut(Cdataframe *cdataframe, int limite_ligne, int limi
 }
 
 void ecrire_cdataframe_fichier(char *nom_fichier, Cdataframe *cdataframe, int limite_ligne, int limite_colonne) {
-    // Ouvre un fichier en mode ecriture avec le nom specifie dans la variable et stocke le pointeur de fichier dans la variable "fichier"
-    FILE *fichier = fopen(nom_fichier, "w");
-
     // Redirige la sortie standard (stdout) vers le fichier specifie par "nom_fichier". a partir de maintenant, toutes les sorties de printf seront ecrites dans le fichier.
     freopen(nom_fichier, "w", stdout);
     
     // Appelle la fonction "afficher_cdataframe" pour afficher le contenu du CDataframe. Comme la sortie standard a ete redirigee, le resultat sera ecrit dans le fichier.
-    afficher_cdataframe(cdataframe, limite_ligne, limite_colonne);
+    afficher_cdataframe(cdataframe, limite_ligne, limite_colonne); 
 
     // Restaure la sortie standard (stdout) en la redirigeant vers la console ("CON"). Les sorties de printf reviendront a leur comportement normal (affichage a l'ecran).
-    freopen("CON", "w", stdout);
-
-    // Ferme le fichier ouvert precedemment.
-    fclose(fichier);
+    FILE *console_redirection = freopen(CONSOLE_DEVICE, "w", stdout);
 
     printf("L'affichage du CDataframe a ete exporte dans un fichier \"%s\".\n\n", nom_fichier);
 }
@@ -689,7 +688,7 @@ int choix_type(Cdataframe *cdataframe, char fonction) {
     "4: Entier non signe\n"
     "5: Double\n"
     "6: Chaine de caracteres\n>");
-    scanf("%d", &choix_type);
+    scanf(" %d", &choix_type);
 
     int continuer_boucle = 1;
     while (continuer_boucle) {
@@ -1038,13 +1037,8 @@ int compter_cellules_inferieures(Cdataframe *cdataframe, EnumType type, void *va
     return compteur;
 }
 
-
-
 void exporter_cdataframe(Cdataframe *cdataframe, char *nom_fichier, char separateur) {
     // Ouvre le fichier en mode écriture
-    FILE *fichier = fopen(nom_fichier, "w");
-
-    // Redirige la sortie standard vers le fichier
     freopen(nom_fichier, "w", stdout);
 
     int i;
@@ -1072,17 +1066,11 @@ void exporter_cdataframe(Cdataframe *cdataframe, char *nom_fichier, char separat
     }
 
     // Rétablit la sortie standard
-    freopen("CON", "w", stdout);
-
-    // Ferme le fichier
-    fclose(fichier);
-
+    freopen(CONSOLE_DEVICE, "w", stdout);
+    
     // Affiche un message indiquant que l'export s'est terminé avec succès
     printf("L'export du CDataframe s'est termine correctement dans le fichier : \"%s\".\n\n", nom_fichier);
 }
-
-
-
 
 // Cette fonction retourne la taille maximale parmi toutes les valeurs stockées dans le CDataFrame
 int retourner_taille_max(Cdataframe *cdataframe) {
